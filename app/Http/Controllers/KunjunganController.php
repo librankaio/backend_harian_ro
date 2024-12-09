@@ -39,6 +39,7 @@ class KunjunganController extends Controller
             'geo_loc'           => $request->geo_loc,
             'nama_client'       => $request->nama_client,
             'jenis_kunjungan'   => $request->jenis_kunjungan,
+            'stat_perencanaan'  => 'Y',
         ]);
 
         return response()->json([
@@ -48,5 +49,10 @@ class KunjunganController extends Controller
         ]);
         //return response
         // return new PostResource(true, 'Data Post Berhasil Ditambahkan!', $post);
+    }
+
+    public function getPerencanaan($nik){
+        $data = Kunjungan::where('nik','=',$nik)->where('stat_perencanaan','=','Y')->get();
+        return response()->json($data, 200);
     }
 }
