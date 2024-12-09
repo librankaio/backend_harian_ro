@@ -102,7 +102,7 @@ return [
     */
 
     // 'ttl' => env('JWT_TTL', 60),
-    'ttl' => 0,
+    'ttl' => env('JWT_TTL', NULL),
 
     /*
     |--------------------------------------------------------------------------
@@ -151,7 +151,7 @@ return [
     'required_claims' => [
         'iss',
         'iat',
-        'exp',
+        // 'exp',
         'nbf',
         'sub',
         'jti',
@@ -221,7 +221,8 @@ return [
     |
     */
 
-    'blacklist_enabled' => env('JWT_BLACKLIST_ENABLED', true),
+    // 'blacklist_enabled' => env('JWT_BLACKLIST_ENABLED', true),
+    'blacklist_enabled' => env('JWT_BLACKLIST_ENABLED', false),
 
     /*
     | -------------------------------------------------------------------------
