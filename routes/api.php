@@ -26,8 +26,14 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 
 Route::get('/users', [ExController::class, 'getUser'])->name('users')->middleware('jwt.verify');
 Route::get('/users/{id}', [ExController::class, 'getById'])->name('usersgetid')->middleware('jwt.verify');
-Route::post('/postkunjungan', [KunjunganController::class, 'storeKunjungan'])->name('storekunjungan')->middleware('jwt.verify');
+Route::post('/storeperencanaan', [KunjunganController::class, 'storePerencanaan'])->name('storeperencanaan')->middleware('jwt.verify');
 Route::get('/getperencanaan/{nik}', [KunjunganController::class, 'getPerencanaan'])->name('getperencanaan')->middleware('jwt.verify');
+
+Route::post('/storekunjungan', [KunjunganController::class, 'storekKunjungan'])->name('storekunjungan')->middleware('jwt.verify');
+Route::get('/getriwayatkunjungan/{nik}', [KunjunganController::class, 'getRiwayatKunjungan'])->name('getriwayatkunjungan')->middleware('jwt.verify');
+
+
+Route::get('/getstatistik/{nik}', [KunjunganController::class, 'getStatistik'])->name('getstatistik')->middleware('jwt.verify');
 
 Route::group(['prefix' => 'user','middleware' => ['assign.guard:user','jwt.auth']],function ()
 {
