@@ -34,6 +34,8 @@ Route::get('/getriwayatkunjungan/{nik}', [KunjunganController::class, 'getRiwaya
 
 
 Route::get('/getstatistik/{nik}', [KunjunganController::class, 'getStatistik'])->name('getstatistik')->middleware('jwt.verify');
+Route::get('/pembinaan/{nik}', [KunjunganController::class, 'getPembinaan'])->name('getpembinaan')->middleware('jwt.verify');
+Route::get('/penagihan/{nik}', [KunjunganController::class, 'getPenagihan'])->name('getpenagihan')->middleware('jwt.verify');
 
 Route::group(['prefix' => 'user','middleware' => ['assign.guard:user','jwt.auth']],function ()
 {

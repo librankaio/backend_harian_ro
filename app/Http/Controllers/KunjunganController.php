@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Kunjungan;
+use App\Models\Photo;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
@@ -67,6 +68,7 @@ class KunjunganController extends Controller
              'id'       => 'required|string',
              'geo_loc'  => 'required',
              'dt_realisasi'  => 'required',
+             'photo'  => 'required',
          ]);
  
          $dt_realisasi = Carbon::parse($validated['dt_realisasi'])->format('Y-m-d h:i:s');
@@ -79,6 +81,15 @@ class KunjunganController extends Controller
             'todo' => $request->todo,
             'geo_loc' => $validated['geo_loc'],
             'dt_realisasi_kunjungan' => $dt_realisasi,
+        ]);
+
+        $originalname_img_upload = request('photo')->getClientOriginalName();
+        $path_upload = "img_kunjungan/$id/";
+        request()->file('photo')->storeAs($path_upload, $originalname_img_upload);
+        
+        //UPDATE FILE TO DB
+        Photo::where('id', '=', $id)->update([
+            'file' => request()->file('photo')->getClientOriginalName(),
         ]);
  
          // Save the profile changes
@@ -116,5 +127,15 @@ class KunjunganController extends Controller
             'data'=> $results,
             'code' => 200,
         ]);
+    }
+    
+    public function getPembinaan($nik){
+        $data = Kunjungan::where('nik','=',$nik)->where('stat_kunjungan','=','Y')->where('stat_perencanaan','=','Y')->where('jenis_kunjungan','=','Pembinaan')->get();
+        return response()->json($data, 200);
+    }
+
+    public function getPenagihan($nik){
+        $data = Kunjungan::where('nik','=',$nik)->where('stat_kunjungan','=','Y')->where('stat_perencanaan','=','Y')->where('jenis_kunjungan','=','Penagihan')->get();
+        return response()->json($data, 200);
     }
 }
