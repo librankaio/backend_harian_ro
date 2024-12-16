@@ -61,34 +61,37 @@ class KunjunganController extends Controller
         return response()->json($data, 200);
     }
 
-    public function storekKunjungan(Request $request, $id)
+    public function storeKunjungan(Request $request)
      {
          // Validate the request
          $validated = $request->validate([
-             'id'       => 'required|string',
-             'geo_loc'  => 'required',
-             'dt_realisasi'  => 'required',
-             'photo'  => 'required',
+             'id_kunjungan' => 'required|integer',
+             'geo_loc'      => 'required',
+             'dt_realisasi' => 'required',
+             'photo'        => 'required|image|mimes:jpeg,png,jpg,gif|',
          ]);
  
          $dt_realisasi = Carbon::parse($validated['dt_realisasi'])->format('Y-m-d h:i:s');
          // Find the Kunjungan by ID
-         $kunjungan = Kunjungan::findOrFail($id);
+         $kunjungan = Kunjungan::findOrFail($validated['id_kunjungan']);
  
          // Update the stat flag
-         Kunjungan::where('id', '=', $validated['id'])->update([
+         Kunjungan::where('id', '=', $validated['id_kunjungan'])->update([
             'stat_kunjungan' => 'Y',
             'todo' => $request->todo,
             'geo_loc' => $validated['geo_loc'],
             'dt_realisasi_kunjungan' => $dt_realisasi,
         ]);
 
+        $id = $validated['id_kunjungan'];
+
         $originalname_img_upload = request('photo')->getClientOriginalName();
         $path_upload = "img_kunjungan/$id/";
         request()->file('photo')->storeAs($path_upload, $originalname_img_upload);
-        
+
         //UPDATE FILE TO DB
-        Photo::where('id', '=', $id)->update([
+        Photo::create([
+            'id_kunjungan' => $validated['id_kunjungan'],
             'file' => request()->file('photo')->getClientOriginalName(),
         ]);
  
