@@ -16,7 +16,7 @@ class KunjunganController extends Controller
         $validator = Validator::make($request->all(), [
             'nik'               => 'required',
             'nama_user'         => 'required',
-            'phone_user'        => 'required',
+            'phone_user'      => 'required',
             'dt_kunjungan'      => 'required',
             'lokasi_kunjungan'  => 'required',
             'nama_client'       => 'required',
@@ -31,15 +31,16 @@ class KunjunganController extends Controller
         //upload image
         // $image = $request->file('image');
         // $image->storeAs('public/posts', $image->hashName());
+        
+        $dt_kunjungan = Carbon::parse($request->dt_kunjungan)->format('Y-m-d H:i:s');
 
-        $dt_kunjungan = Carbon::parse($request->dt_kunjungan)->format('Y-m-d h:i:s');
         // $dt_kunjungan = Carbon::createFromFormat('d/m/Y h:i', $request->dt_kunjungan)->format('Y-m-d h:i:s');
         // dd($dt_kunjungan);
         //create post
         $post = Kunjungan::create([
             'nik'               => $request->nik,
             'nama_user'         => $request->nama_user,
-            'phone_user'         => $request->phone_user,
+            'phone_client'      => $request->phone_user,
             'dt_kunjungan'      => $dt_kunjungan,
             'lokasi_kunjungan'  => $request->lokasi_kunjungan,
             'nama_client'       => $request->nama_client,
