@@ -64,41 +64,38 @@ class KunjunganController extends Controller
 
     public function storeKunjungan(Request $request)
      {
-         // Validate the request
+        // Validate the request
          $validated = $request->validate([
              'id_kunjungan' => 'required|integer',
              'geo_loc'      => 'required',
              'dt_realisasi' => 'required',
              'photo'        => 'required|image|mimes:jpeg,png,jpg,gif|',
          ]);
- 
-         $dt_realisasi = Carbon::parse($validated['dt_realisasi'])->format('Y-m-d h:i:s');
+
          // Find the Kunjungan by ID
          $kunjungan = Kunjungan::findOrFail($validated['id_kunjungan']);
+
+         $dt_realisasi = Carbon::parse($request->dt_realisasi)->format('Y-m-d H:i:s');
  
          // Update the stat flag
-         Kunjungan::where('id', '=', $validated['id_kunjungan'])->update([
+         Kunjungan::where('id', '=', $request->id_kunjungan)->update([
             'stat_kunjungan' => 'Y',
             'todo' => $request->todo,
-            'geo_loc' => $validated['geo_loc'],
+            'geo_loc' => $request->geo_loc,
             'dt_realisasi_kunjungan' => $dt_realisasi,
         ]);
-
-        $id = $validated['id_kunjungan'];
-
-        $originalname_img_upload = request('photo')->getClientOriginalName();
-        $path_upload = "img_kunjungan/$id/";
-        request()->file('photo')->storeAs($path_upload, $originalname_img_upload);
+        // dd("Test");
+        // $originalname_img_upload = request('photo')->getClientOriginalName();
+        // $path_upload = "img_kunjungan/$id/";
+        // request()->file('photo')->storeAs($path_upload, $originalname_img_upload);
 
         //UPDATE FILE TO DB
         Photo::create([
-            'id_kunjungan' => $validated['id_kunjungan'],
+            'id_kunjungan' => $request->id_kunjungan,
             'file' => request()->file('photo')->getClientOriginalName(),
         ]);
  
-         // Save the profile changes
-         $kunjungan->save();
- 
+        $kunjungan = Kunjungan::findOrFail($validated['id_kunjungan']);
          return response()->json([
             'message' => 'Berhasil membuat kunjungan',
             'data' => $kunjungan,
