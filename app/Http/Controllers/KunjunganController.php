@@ -16,7 +16,7 @@ class KunjunganController extends Controller
         $validator = Validator::make($request->all(), [
             'nik'               => 'required',
             'nama_user'         => 'required',
-            'phone_user'      => 'required',
+            'phone_client'      => 'required',
             'dt_kunjungan'      => 'required',
             'lokasi_kunjungan'  => 'required',
             'nama_client'       => 'required',
@@ -40,7 +40,7 @@ class KunjunganController extends Controller
         $post = Kunjungan::create([
             'nik'               => $request->nik,
             'nama_user'         => $request->nama_user,
-            'phone_client'      => $request->phone_user,
+            'phone_client'      => $request->phone_client,
             'dt_kunjungan'      => $dt_kunjungan,
             'lokasi_kunjungan'  => $request->lokasi_kunjungan,
             'nama_client'       => $request->nama_client,
