@@ -58,7 +58,8 @@ class KunjunganController extends Controller
     }
 
     public function getPerencanaan($nik){
-        $data = Kunjungan::where('nik','=',$nik)->where('stat_perencanaan','=','Y')->get();
+        // dd($nik);
+        $data = Kunjungan::where('nik','=',$nik)->where('stat_perencanaan','=','Y')->whereNull('stat_kunjungan')->get();
         return response()->json($data, 200);
     }
 
