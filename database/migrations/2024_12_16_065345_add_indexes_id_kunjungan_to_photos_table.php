@@ -15,10 +15,10 @@ class AddIndexesIdKunjunganToPhotosTable extends Migration
     {
         Schema::table('photos', function (Blueprint $table) {
             //
-            $table->unsignedBigInteger('id_kunjungan')->change();
-            $table->index(['id_kunjungan']);
+            $table->unsignedBigInteger('kunjungan_id')->change();
+            $table->index(['kunjungan_id']);
             // $table->engine = 'InnoDB';
-            $table->foreign('id_kunjungan')
+            $table->foreign('kunjungan_id')
               ->references('id')
               ->on('kunjungans')
               ->onDelete('cascade');
