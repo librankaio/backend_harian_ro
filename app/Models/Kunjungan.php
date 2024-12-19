@@ -7,6 +7,11 @@ use Illuminate\Database\Eloquent\Model;
 
 class Kunjungan extends Model
 {
+    public function photo()
+    {
+        return $this->hasOne(Photo::class);
+    }
+
     use HasFactory;
 
     protected $fillable = [

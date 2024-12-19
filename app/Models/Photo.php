@@ -9,8 +9,13 @@ class Photo extends Model
 {
     use HasFactory;
 
+    public function kunjungans()
+    {
+        return $this->belongsTo(Kunjungan::class);
+    }
+
     protected $fillable = [
-        'id_kunjungan',
+        'kunjungan_id',
         'file',
     ];
 }

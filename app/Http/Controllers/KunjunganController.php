@@ -67,36 +67,36 @@ class KunjunganController extends Controller
      {
         // Validate the request
          $validated = $request->validate([
-             'id_kunjungan' => 'required|integer',
+             'kunjungan_id' => 'required|integer',
              'geo_loc'      => 'required',
              'dt_realisasi' => 'required',
              'photo'        => 'required|image|mimes:jpeg,png,jpg,gif|',
          ]);
 
          // Find the Kunjungan by ID
-         $kunjungan = Kunjungan::findOrFail($validated['id_kunjungan']);
+         $kunjungan = Kunjungan::findOrFail($validated['kunjungan_id']);
 
          $dt_realisasi = Carbon::parse($request->dt_realisasi)->format('Y-m-d H:i:s');
- 
+
          // Update the stat flag
-         Kunjungan::where('id', '=', $request->id_kunjungan)->update([
+         Kunjungan::where('id', '=', $request->kunjungan_id)->update([
             'stat_kunjungan' => 'Y',
             'todo' => $request->todo,
             'geo_loc' => $request->geo_loc,
             'dt_realisasi_kunjungan' => $dt_realisasi,
         ]);
-        // dd("Test");
-        // $originalname_img_upload = request('photo')->getClientOriginalName();
-        // $path_upload = "img_kunjungan/$id/";
-        // request()->file('photo')->storeAs($path_upload, $originalname_img_upload);
+
+        $originalname_img_upload = request('photo')->getClientOriginalName();
+        $path_upload = "img_kunjungan/$request->kunjungan_id/";
+        request()->file('photo')->storeAs($path_upload, $originalname_img_upload);
 
         //UPDATE FILE TO DB
         Photo::create([
-            'id_kunjungan' => $request->id_kunjungan,
+            'kunjungan_id' => $request->kunjungan_id,
             'file' => request()->file('photo')->getClientOriginalName(),
         ]);
  
-        $kunjungan = Kunjungan::findOrFail($validated['id_kunjungan']);
+        $kunjungan = Kunjungan::findOrFail($validated['kunjungan_id']);
          return response()->json([
             'message' => 'Berhasil membuat kunjungan',
             'data' => $kunjungan,
@@ -105,7 +105,8 @@ class KunjunganController extends Controller
      }
 
      public function getRiwayatKunjungan($nik){
-        $data = Kunjungan::where('nik','=',$nik)->where('stat_kunjungan','=','Y')->get();
+        $data = Kunjungan::where('nik','=',$nik)->where('stat_kunjungan','=','Y')->where('stat_kunjungan','=','Y')->with(['photo'])->get();
+
         return response()->json($data, 200);
     }
 
