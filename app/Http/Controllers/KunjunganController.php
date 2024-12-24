@@ -69,6 +69,7 @@ class KunjunganController extends Controller
          $validated = $request->validate([
              'kunjungan_id' => 'required|integer',
              'geo_loc'      => 'required',
+             'alamat'      => 'required',
              'dt_realisasi' => 'required',
              'photo'        => 'required|image|mimes:jpeg,png,jpg,gif|',
          ]);
@@ -83,6 +84,7 @@ class KunjunganController extends Controller
             'stat_kunjungan' => 'Y',
             'todo' => $request->todo,
             'geo_loc' => $request->geo_loc,
+            'alamat' => $request->alamat,
             'dt_realisasi_kunjungan' => $dt_realisasi,
         ]);
 
@@ -111,10 +113,11 @@ class KunjunganController extends Controller
     }
 
      public function getStatistik($nik){
+        // dd(request()->all());
         $results = [];
 
-        $count_of_pembinaan = Kunjungan::where('nik','=',$nik)->where('stat_kunjungan','=','Y')->where('stat_perencanaan','=','Y')->where('jenis_kunjungan','=','Pembinaan')->count();
-        $count_of_penagihan = Kunjungan::where('nik','=',$nik)->where('stat_kunjungan','=','Y')->where('stat_perencanaan','=','Y')->where('jenis_kunjungan','=','Penagihan')->count();
+        $count_of_pembinaan = Kunjungan::where('nik','=',$nik)->where('stat_kunjungan','=','Y')->where('stat_perencanaan','=','Y')->where('jenis_kunjungan','=','Pembinaan')->whereBetween('dt_realisasi_kunjungan', [request('dtfrom'), request('dtto')])->count();
+        $count_of_penagihan = Kunjungan::where('nik','=',$nik)->where('stat_kunjungan','=','Y')->where('stat_perencanaan','=','Y')->where('jenis_kunjungan','=','Penagihan')->whereBetween('dt_realisasi_kunjungan', [request('dtfrom'), request('dtto')])->count();
 
         $pembinaan_counts['pembinaan'] = $count_of_pembinaan;
         $penagihan_counts['penagihan'] = $count_of_penagihan;

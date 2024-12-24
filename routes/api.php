@@ -3,6 +3,7 @@
 use App\Http\Controllers\ApiLoginController;
 use App\Http\Controllers\ExController;
 use App\Http\Controllers\KunjunganController;
+use App\Http\Controllers\LiveTrackController;
 use App\Http\Controllers\TkunjunganController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -36,6 +37,9 @@ Route::get('/getriwayatkunjungan/{nik}', [KunjunganController::class, 'getRiwaya
 Route::get('/getstatistik/{nik}', [KunjunganController::class, 'getStatistik'])->name('getstatistik')->middleware('jwt.verify');
 Route::get('/pembinaan/{nik}', [KunjunganController::class, 'getPembinaan'])->name('getpembinaan')->middleware('jwt.verify');
 Route::get('/penagihan/{nik}', [KunjunganController::class, 'getPenagihan'])->name('getpenagihan')->middleware('jwt.verify');
+
+Route::get('/userlocation/{nik}', [LiveTrackController::class, 'getLocation'])->name('userlocation')->middleware('jwt.verify');
+Route::post('/storelocation', [LiveTrackController::class, 'storeLocation'])->name('storelocation')->middleware('jwt.verify');
 
 Route::group(['prefix' => 'user','middleware' => ['assign.guard:user','jwt.auth']],function ()
 {
