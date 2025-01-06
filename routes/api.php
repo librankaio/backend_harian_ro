@@ -31,6 +31,7 @@ Route::post('/storeperencanaan', [KunjunganController::class, 'storePerencanaan'
 Route::get('/getperencanaan/{nik}', [KunjunganController::class, 'getPerencanaan'])->name('getperencanaan')->middleware('jwt.verify');
 
 Route::post('/storekunjungan', [KunjunganController::class, 'storeKunjungan'])->name('storekunjungan')->middleware('jwt.verify');
+
 Route::get('/getriwayatkunjungan/{nik}', [KunjunganController::class, 'getRiwayatKunjungan'])->name('getriwayatkunjungan')->middleware('jwt.verify');
 
 

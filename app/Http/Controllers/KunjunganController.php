@@ -64,23 +64,23 @@ class KunjunganController extends Controller
     }
 
     public function storeKunjungan(Request $request)
-     {
+    {
         // Validate the request
-         $validated = $request->validate([
+        $validated = $request->validate([
              'kunjungan_id' => 'required|integer',
              'geo_loc'      => 'required',
              'alamat'      => 'required',
              'dt_realisasi' => 'required',
              'photo'        => 'required|image|mimes:jpeg,png,jpg,gif|',
-         ]);
+        ]);
 
          // Find the Kunjungan by ID
-         $kunjungan = Kunjungan::findOrFail($validated['kunjungan_id']);
+        $kunjungan = Kunjungan::findOrFail($validated['kunjungan_id']);
 
-         $dt_realisasi = Carbon::parse($request->dt_realisasi)->format('Y-m-d H:i:s');
+        $dt_realisasi = Carbon::parse($request->dt_realisasi)->format('Y-m-d H:i:s');
 
          // Update the stat flag
-         Kunjungan::where('id', '=', $request->kunjungan_id)->update([
+        Kunjungan::where('id', '=', $request->kunjungan_id)->update([
             'stat_kunjungan' => 'Y',
             'todo' => $request->todo,
             'geo_loc' => $request->geo_loc,
@@ -99,20 +99,20 @@ class KunjunganController extends Controller
         ]);
  
         $kunjungan = Kunjungan::findOrFail($validated['kunjungan_id']);
-         return response()->json([
+        return response()->json([
             'message' => 'Berhasil membuat kunjungan',
             'data' => $kunjungan,
             'code' => 200
         ]);
-     }
+    }
 
-     public function getRiwayatKunjungan($nik){
+    public function getRiwayatKunjungan($nik){
         $data = Kunjungan::where('nik','=',$nik)->where('stat_kunjungan','=','Y')->where('stat_kunjungan','=','Y')->with(['photo'])->get();
 
         return response()->json($data, 200);
     }
 
-     public function getStatistik($nik){
+    public function getStatistik($nik){
         // dd(request()->all());
         $results = [];
 
