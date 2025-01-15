@@ -67,11 +67,11 @@ class KunjunganController extends Controller
     {
         // Validate the request
         $validated = $request->validate([
-             'kunjungan_id' => 'required|integer',
-             'geo_loc'      => 'required',
-             'alamat'      => 'required',
-             'dt_realisasi' => 'required',
-             'photo'        => 'required|image|mimes:jpeg,png,jpg,gif|',
+            'kunjungan_id' => 'required|integer',
+            'geo_loc'      => 'required',
+            'alamat'      => 'required',
+            'dt_realisasi' => 'required',
+            'photo'        => 'required|image|mimes:jpeg,png,jpg,gif|',
         ]);
 
          // Find the Kunjungan by ID
@@ -143,5 +143,13 @@ class KunjunganController extends Controller
     public function getPenagihan($nik){
         $data = Kunjungan::where('nik','=',$nik)->where('stat_kunjungan','=','Y')->where('stat_perencanaan','=','Y')->where('jenis_kunjungan','=','Penagihan')->get();
         return response()->json($data, 200);
+    }
+
+    public function delete($id){
+        Kunjungan::find($id)->delete();
+        return response()->json([
+            'message' => 'Berhasil Menghapus Data',
+            'code' => 200
+        ]);
     }
 }

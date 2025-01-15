@@ -42,6 +42,8 @@ Route::get('/penagihan/{nik}', [KunjunganController::class, 'getPenagihan'])->na
 Route::get('/userlocation/{nik}', [LiveTrackController::class, 'getLocation'])->name('userlocation')->middleware('jwt.verify');
 Route::post('/storelocation', [LiveTrackController::class, 'storeLocation'])->name('storelocation')->middleware('jwt.verify');
 
+Route::delete('/deletedata/{id}', [KunjunganController::class, 'delete'])->name('deletedata')->middleware('jwt.verify');
+
 Route::group(['prefix' => 'user','middleware' => ['assign.guard:user','jwt.auth']],function ()
 {
 	// Route::get('/demo','AdminController@demo');
